@@ -25,14 +25,15 @@ const darkModeProviderFactory = (css) => ({ children }) => (
  * @returns {Function} Function which can resolve values from this library to actual values.
  */
 const resolveFactory = (defaultVars) => (value) => {
-  if (value.substring(0, 5) !== 'var(--') return value;
+  if (value.substring(0, 6) !== 'var(--') return value;
   const lookupVal = value.substring(4, value.length - 1);
 
   if (typeof window === 'undefined') return defaultVars[lookupVal];
 
   // eslint-disable-next-line no-undef
   return window.getComputedStyle(window.document.documentElement)
-    .getPropertyValue(lookupVal);
+    .getPropertyValue(lookupVal)
+    || defaultVars[lookupVal];
 };
 
 /**
